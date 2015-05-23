@@ -1,0 +1,26 @@
+Package: colmaps
+Type: Package
+Title: Colombian maps
+Version: 0.0.0.9000
+Date: 2015-05-14
+Authors@R: c(
+    person("Daniel", "Moreno", email = "damorenoco@unal.edu.co",
+           role = c("aut", "cre")),
+    person("Julian M.", "Cruz", email = "cruz.julian.mauricio@gmail.com",
+           role = "ctb"),
+    person("Adriana", "Clavijo", email = "amclavijod@unal.edu.co", role = "ctb")
+           )
+Maintainer: Daniel Moreno <damorenoco@unal.edu.co>
+Description:  Colombian maps data and other colombian data sets useful for
+    choropleth maps.
+License: CC0
+LazyData: TRUE
+Depends: R (>= 3.0.0)
+Imports:
+  sp
+Suggests:
+  ggplot2,
+  rgdal,
+  micromap,
+  knitr
+Encoding: UTF-8
