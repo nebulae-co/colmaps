@@ -40,8 +40,8 @@ for (level in names(map)){
   # Format data
   dots <- list(id = var_codigo[[level]],
                id_depto = ~ CODIGO_DEP,
-               municipio = ~ capwords(NOMBRE_MUN),
-               depto = ~ capwords(NOMBRE_DEP))
+               municipio = ~ capwords(enc2utf8(NOMBRE_MUN)),
+               depto = ~ capwords(enc2utf8(NOMBRE_DEP)))
 
   if (level == "departamentos") dots <- dots[-c(2, 3)]
 
