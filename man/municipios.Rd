@@ -4,7 +4,7 @@
 \name{municipios}
 \alias{municipios}
 \title{Colombian municipality boundaries.}
-\format{A \code{"\linkS4class{SpatialPolygonsDataFrame}"}. The data slot is a
+\format{A \code{\linkS4class{SpatialPolygonsDataFrame}}. The data slot is a
 data frame with:
 \describe{
   \item{id}{oficial municipality id as defined by the

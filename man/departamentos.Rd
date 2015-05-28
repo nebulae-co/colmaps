@@ -4,7 +4,7 @@
 \name{departamentos}
 \alias{departamentos}
 \title{Colombian department boundaries.}
-\format{A \code{"\linkS4class{SpatialPolygonsDataFrame}"}. The data slot is a
+\format{A \code{\linkS4class{SpatialPolygonsDataFrame}}. The data slot is a
 data frame with:
 \describe{
   \item{id}{oficial department id as defined by the Natioanl Department of
