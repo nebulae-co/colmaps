@@ -10,5 +10,5 @@
 #'
 #' @docType package
 #' @name colmaps
-#' @import sp
+#' @importClassesFrom sp SpatialPolygonsDataFrame
 NULL
