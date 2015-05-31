@@ -4,13 +4,13 @@
 \name{municipios}
 \alias{municipios}
 \title{Colombian municipality boundaries.}
-\format{A \code{"\linkS4class{SpatialPolygonsDataFrame}"}. The data slot is a
+\format{A \code{\linkS4class{SpatialPolygonsDataFrame}}. The data slot is a
 data frame with:
 \describe{
-  \item{id}{oficial municipality id as defined by the
+  \item{id}{official municipality id as defined by the
      \href{http://dane.gov.co}{National Department of Statistics (DANE)},
      character}
-  \item{id_depto}{oficial department id to which the municipality is
+  \item{id_depto}{official department id in which the municipality is
      circumbscribed, character}
   \item{municipio}{name of the municipality}
      \item{depto}{department name}

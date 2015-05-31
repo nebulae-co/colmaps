@@ -4,10 +4,10 @@
 \name{departamentos}
 \alias{departamentos}
 \title{Colombian department boundaries.}
-\format{A \code{"\linkS4class{SpatialPolygonsDataFrame}"}. The data slot is a
+\format{A \code{\linkS4class{SpatialPolygonsDataFrame}}. The data slot is a
 data frame with:
 \describe{
-  \item{id}{oficial department id as defined by the Natioanl Department of
+  \item{id}{official department id as defined by the National Department of
   Statistics (DANE), character}
   \item{depto}{the department name}
 }}
@@ -19,7 +19,7 @@ departamentos
 }
 \description{
 A dataset containing the polygons that define boundaries of the 33 colombian
-departments, including it's capital, Bogotá.
+departments, including its capital, Bogotá.
 }
 \seealso{
 \code{\link{municipios}} for data at the municipality level.
