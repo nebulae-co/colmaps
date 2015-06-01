@@ -6,13 +6,14 @@
 \alias{colmaps-package}
 \title{colmaps: Colombian maps data}
 \description{
-The colmaps package provides \linkS4class{SpatialPolygonsDataFrame} objects
-of colombian municipalities and departments, useful to make choropleth maps,
-namely \code{\link{municipios}} and \code{\link{departamentos}}.
+The colmaps package provides \code{\linkS4class{SpatialPolygonsDataFrame}}
+objects of colombian municipalities and departments, useful to make
+choropleth maps, namely \code{\link{municipios}} and
+\code{\link{departamentos}}.
 }
 \details{
 Data gathered from the
-\href{http://dane.gov.co}{Natioanl Department of Statistics (DANE)}
+\href{http://dane.gov.co}{National Department of Statistics (DANE)}
 \url{http://geoportal.dane.gov.co:8084/Divipola}.
 }
 
