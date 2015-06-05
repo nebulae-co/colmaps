@@ -11,5 +11,7 @@
 #'
 #' @docType package
 #' @name colmaps
+#'
+#' @import ggplot2
 #' @importClassesFrom sp SpatialPolygonsDataFrame
 NULL

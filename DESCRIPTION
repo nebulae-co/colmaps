@@ -17,9 +17,9 @@ License: CC0
 LazyData: TRUE
 Depends: R (>= 3.0.0)
 Imports:
-  sp
+  sp,
+  ggplot2
 Suggests:
-  ggplot2,
   rgdal,
   micromap,
   knitr
