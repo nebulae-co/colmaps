@@ -13,7 +13,7 @@ Authors@R: c(
 Maintainer: Daniel Moreno <damorenoco@unal.edu.co>
 Description:  Colombian maps data and other colombian data sets useful for
     choropleth maps.
-License: CC0
+License: GPL-2
 LazyData: TRUE
 Depends: R (>= 3.0.0)
 Imports:
