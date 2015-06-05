@@ -1,3 +1,6 @@
+# So that the examples finds the departamentos data
+globalVariables("departamentos")
+
 # From ggmap's theme_nothing()
 theme_map <- theme(axis.text = element_blank(),
                    axis.title = element_blank(),
@@ -41,9 +44,10 @@ theme_map <- theme(axis.text = element_blank(),
 #'
 #' @return a ggplot object.
 #'
-#' @examples colmap() # Plots the dafult: Colombia's departments.
+#' @examples
+#' colmap() # Plot default map: Colombia departments.
 #'
-#'
+#' @export
 colmap <- function(map = departamentos, data = NULL, var = NULL, map_id = "id",
                    data_id = "id", legend = TRUE){
 

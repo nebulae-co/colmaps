@@ -40,6 +40,6 @@ ggplot and its geom_map so that its easy to make a quick choropleth map. You
 can get further control with ggplot.
 }
 \examples{
-colmap() # Plots the dafult: Colombia's departments.
+colmap() # Plot default map: colombia departments.
 }
 
