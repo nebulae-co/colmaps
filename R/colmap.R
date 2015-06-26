@@ -1,4 +1,4 @@
-# So that the examples finds the departamentos data
+# So that the examples find the departamentos data
 globalVariables("departamentos")
 
 # From ggmap's theme_nothing()
@@ -55,11 +55,18 @@ colmap <- function(map = departamentos, data = NULL, var = NULL, map_id = "id",
   data <- as.data.frame(data)
 
   if (dim(data)[2] < 2){
-    data <- slot(map, "data")[, map_id, drop = FALSE]
+    data <- if (is(map, "SpatialPolygonsDataFrame")){
+              sapply(slot(map, "polygons"), slot, "ID")
+            } else {unique(map_df[, map_id])}
+
+    data <- data.frame(setNames(list(data), map_id), stringsAsFactors = FALSE)
+
     var <- map_id
     legend <- FALSE
   } else if (is.null(var)){
     var <- setdiff(names(data), data_id)[[1]]
+  } else if (!var %in% names(data)){
+    stop(var, "not found in data.")
   }
 
   if (!data_id %in% names(data))
