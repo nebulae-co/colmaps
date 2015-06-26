@@ -2,4 +2,3 @@
 .Rhistory
 .RData
 data-raw/shapefiles
-inst/extdata

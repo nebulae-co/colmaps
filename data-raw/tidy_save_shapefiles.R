@@ -7,8 +7,8 @@ map <- list(municipios = NULL, departamentos = NULL)
 var_codigo <- c(municipios = "CODIGO_DPT", departamentos = "CODIGO_DEP")
 
 for (level in names(map)){
-  path <- list(input     = "data-raw/shapefiles/",
-               rawoutput = "inst/extdata/",
+  path <- list(input     = "data-raw/shapefiles/raw",
+               rawoutput = "data-raw/shapfiles/",
                binoutput = "data/")
 
   path <- sapply(path, paste0, level)
