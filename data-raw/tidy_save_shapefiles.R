@@ -1,26 +1,19 @@
 library("dplyr")
 library("rgdal")
-
-# help("tolower")
-capwords <- function(s, strict = TRUE) {
-  cap <- function(s) paste(toupper(substring(s, 1, 1)),
-                           {s <- substring(s, 2); if(strict) tolower(s) else s},
-                           sep = "", collapse = " " )
-  sapply(strsplit(s, split = " "), cap, USE.NAMES = !is.null(names(s)))
-}
+library("stringi")
 
 map <- list(municipios = NULL, departamentos = NULL)
 
 var_codigo <- c(municipios = "CODIGO_DPT", departamentos = "CODIGO_DEP")
 
 for (level in names(map)){
-  path <- list(input     = "inst/extdata/",
+  path <- list(input     = "data-raw/shapefiles/",
                rawoutput = "inst/extdata/",
                binoutput = "data/")
 
   path <- sapply(path, paste0, level)
 
-  encoding <- readLines(con = paste0(path["input"], "/", level, ".cpg"),
+  encoding <- readLines(con = paste0(path["input"], "/", level, ".cst"),
                         warn = FALSE)
 
   map[[level]] <- readOGR(dsn = path["input"], layer = level, verbose = FALSE,
@@ -40,8 +33,8 @@ for (level in names(map)){
   # Format data
   dots <- list(id = var_codigo[[level]],
                id_depto = ~ CODIGO_DEP,
-               municipio = ~ capwords(enc2utf8(NOMBRE_MUN)),
-               depto = ~ capwords(enc2utf8(NOMBRE_DEP)))
+               municipio = ~ stri_trans_totitle(enc2utf8(NOMBRE_MUN)),
+               depto = ~ stri_trans_totitle(enc2utf8(NOMBRE_DEP)))
 
   if (level == "departamentos") dots <- dots[-c(2, 3)]
 
@@ -55,5 +48,5 @@ for (level in names(map)){
            driver = "ESRI Shapefile", layer_options = 'ENCODING="ISO-8859-1"')
 
   save(list = level, file = paste0(path["binoutput"], ".rda"),
-       compress = "bzip2", envir = as.environment(map))
+       compress = "xz", envir = as.environment(map))
 }

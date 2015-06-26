@@ -13,7 +13,7 @@ map_levels <- c(municipios = "DIVIPOLA_MUNICIPIOS",
 
 for (level in names(map_levels)){
 
-  path <- paste0("inst/extdata/", level)
+  path <- paste0("data-raw/shapefiles/", level)
 
   if (!dir.exists(path)){
     url  <- paste0(geoserver, map_levels[level], format)
