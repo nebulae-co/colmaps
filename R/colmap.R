@@ -87,12 +87,13 @@ colmap <- function(map = departamentos, data = NULL, var = NULL, map_id = "id",
       color_scale <- colorRampPalette(c("#fee8c8", "#b30000"))(length(unique(data[[var]])))
       gg <- gg +
         scale_fill_manual(values = color_scale)
-    } else{
-      color_scale <- sample(x = RColorBrewer::brewer.pal(9, "Set1"), size = length(unique(data[[var]])), replace = TRUE)
-        #rainbow(n = length(unique(data[[var]])), v = runif(length(unique(data[[var]])), min = 0.3, max = 1))
-      gg <- gg +
         scale_fill_manual(values = color_scale)
-    }
+    } else{
+       if(length(unique(data[[var]])) < 10) color_scale <- RColorBrewer::brewer.pal(length(unique(data[[var]])), "Set1")
+       else color_scale <- rainbow(n = length(unique(data[[var]])), v = (0.3*sin(1:length(unique(data[[var]]))) + 0.7))
+       gg <- gg +
+         scale_fill_manual(values = color_scale)
+     }
   }
 
   if (legend) gg else gg + theme(legend.position = "none")
