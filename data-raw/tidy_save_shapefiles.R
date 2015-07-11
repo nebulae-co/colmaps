@@ -1,14 +1,15 @@
 library("dplyr")
 library("rgdal")
 library("stringi")
+library("rgeos")
 
 map <- list(municipios = NULL, departamentos = NULL)
 
 var_codigo <- c(municipios = "CODIGO_DPT", departamentos = "CODIGO_DEP")
 
 for (level in names(map)){
-  path <- list(input     = "data-raw/shapefiles/raw",
-               rawoutput = "data-raw/shapfiles/",
+  path <- list(input     = "data-raw/shapefiles/raw/",
+               rawoutput = "data-raw/shapefiles/",
                binoutput = "data/")
 
   path <- sapply(path, paste0, level)
@@ -18,6 +19,11 @@ for (level in names(map)){
 
   map[[level]] <- readOGR(dsn = path["input"], layer = level, verbose = FALSE,
                           stringsAsFactors = FALSE, encoding = encoding)
+
+  map[[level]] <- map[[level]] %>%
+                  gSimplify(tol = .0001, topologyPreserve = TRUE) %>%
+                  SpatialPolygonsDataFrame(data = map[[level]]@data,
+                                           match.ID = FALSE)
 
   # Set polygons ids
   for (i in seq_len(nrow(map[[level]]))){
@@ -41,8 +47,11 @@ for (level in names(map)){
   slot(map[[level]], "data") <- slot(map[[level]], "data") %>%
     transmute_(.dots = dots)
 
-  if(dir.exists(path["rawoutput"]))
+  if(dir.exists(path["rawoutput"])){
     file.remove(dir(path["rawoutput"], full.names = TRUE))
+  } else {
+    dir.create(path["rawoutput"])
+  }
 
   writeOGR(obj = map[[level]], dsn = path["rawoutput"], layer = level,
            driver = "ESRI Shapefile", layer_options = 'ENCODING="ISO-8859-1"')
