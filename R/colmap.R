@@ -88,9 +88,12 @@ colmap <- function(map = departamentos, data = NULL, var = NULL, map_id = "id",
       gg <- gg +
         scale_fill_manual(values = color_scale)
     }
-    else{
-      gg <- gg + scale_fill_brewer(palette = "Set3")
-    }
+     else{
+       if(length(unique(data[[var]])) < 10) color_scale <- RColorBrewer::brewer.pal(length(unique(data[[var]])), "Set1")
+       else color_scale <- rainbow(n = length(unique(data[[var]])), v = (0.3*sin(1:length(unique(data[[var]]))) + 0.7))
+       gg <- gg +
+         scale_fill_manual(values = color_scale)
+     }
   }
 
   if (legend) gg else gg + theme(legend.position = "none")
