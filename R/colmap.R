@@ -78,18 +78,18 @@ colmap <- function(map = departamentos, data = NULL, var = NULL, map_id = "id",
     coord_map() +
     theme_map
 
-  if(is.numeric(data[,var])){
-    gg <- gg + scale_fill_continuous(low = "#fff7ec", high = "#b30000")
+  if(is.numeric(data[[var]])){
+    gg <- gg + scale_fill_continuous(low = "#fee8c8", high = "#b30000")
   }
 
-  if(is.factor(data[,var])){
-    if(is.ordered(data[,var])){
-      color_scale <- colorRampPalette(c("#fff7ec", "#b30000"))(length(unique(data[,var])))
+  if(is.factor(data[[var]]) || is.character(data[[var]])){
+    if(is.ordered(data[[var]])){
+      color_scale <- colorRampPalette(c("#fee8c8", "#b30000"))(length(unique(data[[var]])))
       gg <- gg +
         scale_fill_manual(values = color_scale)
     }
     else{
-      gg <- gg + scale_fill_brewer(palette="Set1")
+      gg <- gg + scale_fill_brewer(palette = "Set3")
     }
   }
 
