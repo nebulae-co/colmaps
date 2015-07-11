@@ -89,7 +89,10 @@ colmap <- function(map = departamentos, data = NULL, var = NULL, map_id = "id",
         scale_fill_manual(values = color_scale)
     }
     else{
-      gg <- gg + scale_fill_brewer(palette = "Set3")
+      color_scale <- sample(x = RColorBrewer::brewer.pal(9, "Set1"), size = length(unique(data[[var]])), replace = TRUE)
+        #rainbow(n = length(unique(data[[var]])), v = runif(length(unique(data[[var]])), min = 0.3, max = 1))
+      gg <- gg +
+        scale_fill_manual(values = color_scale)
     }
   }
 
