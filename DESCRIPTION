@@ -1,7 +1,7 @@
 Package: colmaps
 Type: Package
 Title: Colombian maps
-Version: 0.0.0.9500
+Version: 0.0.0.9510
 Date: 2015-05-14
 Authors@R: c(
     person("Daniel", "Moreno", email = "damorenoco@unal.edu.co",
@@ -18,7 +18,8 @@ LazyData: TRUE
 Depends: R (>= 3.0.0)
 Imports:
   sp,
-  ggplot2
+  ggplot2,
+  mapproj
 Suggests:
   rgdal,
   micromap,
