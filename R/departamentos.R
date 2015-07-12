@@ -16,3 +16,32 @@
 #' @seealso \code{\link{municipios}} for data at the municipality level.
 #'
 "departamentos"
+
+#' Colombian department map.
+#'
+#'A function to create the map of a departament with it's municipalities. Each
+#'departament is conformed by a set of municipalities.
+#'
+#' @param deptos a name (char) of the departament which will be created.
+#'
+#' @return a map, a \code{\link{fortify}}able object sucha as a
+#' \code{\linkS4class{SpatialPolygonsDataFrame}} resulting in a
+#' data.frame with columns \code{x} or \code{long}, \code{y} or \code{lat} and
+#' \code{region} or \code{id}.
+#'
+#' @export
+#'
+#' @examples
+#'
+#' library("magrittr")
+#'
+#'"Antioquia" %>% #The name of the departament
+#'  map_departamentos %>% #Applying the function to create the map
+#'  colmap #Generating the color map
+#'
+map_departamentos <- function(deptos){
+  if(any(!deptos %in% unique(municipios@data$depto)))
+    stop(deptos, " no esta en la lista de los departamentos.")
+
+  municipios[municipios@data$depto %in% deptos, ]
+}
