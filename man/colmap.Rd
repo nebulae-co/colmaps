@@ -5,7 +5,7 @@
 \title{Colmap}
 \usage{
 colmap(map = departamentos, data = NULL, var = NULL, map_id = "id",
-  data_id = "id", legend = TRUE)
+  data_id = map_id, legend = TRUE)
 }
 \arguments{
 \item{map}{a \code{\link{fortify}}able object sucha as a

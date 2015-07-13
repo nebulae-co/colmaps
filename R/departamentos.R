@@ -17,6 +17,9 @@
 #'
 "departamentos"
 
+# So that check finds municipios in map_municipios
+globalVariables("municipios")
+
 #' Colombian department map.
 #'
 #'A function to create the map of a departament with it's municipalities. Each
@@ -33,11 +36,8 @@
 #'
 #' @examples
 #'
-#' library("magrittr")
-#'
-#'"Antioquia" %>% #The name of the departament
-#'  map_departamentos %>% #Applying the function to create the map
-#'  colmap #Generating the color map
+#' Antioquia <- map_departamentos("Antioquia")
+#' colmap(Antioquia) # Generating the color map
 #'
 map_departamentos <- function(deptos){
   if(any(!deptos %in% unique(municipios@data$depto)))

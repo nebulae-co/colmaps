@@ -14,4 +14,5 @@
 #'
 #' @import ggplot2
 #' @importClassesFrom sp SpatialPolygonsDataFrame
+#' @import mapproj
 NULL

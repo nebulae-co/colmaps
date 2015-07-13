@@ -13,6 +13,42 @@ theme_map <- theme(axis.text = element_blank(),
                    plot.margin = grid::unit(c(0, 0, -0.5, -0.5), "lines"),
                    complete = TRUE)
 
+# Define color scales
+color_scale <- function(data){
+  UseMethod("color_scale")
+}
+
+# Default - will work as a factor
+color_scale.default <- function(data){
+  color_scale(as.factor(data))
+}
+
+color_scale.factor <- function(data){
+  n <- nlevels(data)
+  if (n < 10){
+    a <- scale_fill_brewer(type = "qual", palette = "Set1")
+  } else {
+    scale_fill_manual(values = rainbow(n = n, v = 0.3 * sin(seq_len(n)) + 0.7))
+  }
+}
+
+# For numeric variables
+color_scale.numeric <- function(data){
+  scale_fill_continuous(low = "#fee8c8", high = "#b30000")
+}
+
+# For ordered factors (ordered categorical variables)
+color_scale.ordered <- function(data){
+  n <- nlevels(data)
+  scale_fill_manual(values = colorRampPalette(c("#fee8c8", "#b30000"))(n))
+}
+
+# For integer values
+color_scale.integer <- function(data){
+  n <- length(unique(data))
+  if (n < 20) color_scale(as.ordered(data)) else color_scale(as.numeric(data))
+}
+
 #' Colmap
 #'
 #' colmap - for colombian map (or in general color map) - is a wrapper of
@@ -49,7 +85,7 @@ theme_map <- theme(axis.text = element_blank(),
 #'
 #' @export
 colmap <- function(map = departamentos, data = NULL, var = NULL, map_id = "id",
-                   data_id = "id", legend = TRUE){
+                   data_id = map_id, legend = TRUE){
 
   map_df <- suppressMessages(fortify(map))
   data <- as.data.frame(data)
@@ -58,43 +94,24 @@ colmap <- function(map = departamentos, data = NULL, var = NULL, map_id = "id",
     data <- if (is(map, "SpatialPolygonsDataFrame")){
               sapply(slot(map, "polygons"), slot, "ID")
             } else {unique(map_df[, map_id])}
-
     data <- data.frame(setNames(list(data), map_id), stringsAsFactors = FALSE)
-
     var <- map_id
     legend <- FALSE
   } else if (is.null(var)){
     var <- setdiff(names(data), data_id)[[1]]
   } else if (!var %in% names(data)){
-    stop(var, "not found in data.")
+    stop(var, " not found in data.")
   }
 
   if (!data_id %in% names(data))
-    stop(data_id, "not found in data.")
+    stop(data_id, " not found in data.")
 
   gg <- ggplot(data, aes_string(map_id = data_id)) +
     geom_map(aes_string(fill = var), map = map_df) +
     expand_limits(x = map_df$long, y = map_df$lat) +
     coord_map() +
-    theme_map
-
-  if(is.numeric(data[[var]])){
-    gg <- gg + scale_fill_continuous(low = "#fee8c8", high = "#b30000")
-  }
-
-  if(is.factor(data[[var]]) || is.character(data[[var]])){
-    if(is.ordered(data[[var]])){
-      color_scale <- colorRampPalette(c("#fee8c8", "#b30000"))(length(unique(data[[var]])))
-      gg <- gg +
-        scale_fill_manual(values = color_scale)
-        scale_fill_manual(values = color_scale)
-    } else{
-       if(length(unique(data[[var]])) < 10) color_scale <- RColorBrewer::brewer.pal(length(unique(data[[var]])), "Set1")
-       else color_scale <- rainbow(n = length(unique(data[[var]])), v = (0.3*sin(1:length(unique(data[[var]]))) + 0.7))
-       gg <- gg +
-         scale_fill_manual(values = color_scale)
-     }
-  }
+    theme_map +
+    color_scale(data[[var]])
 
   if (legend) gg else gg + theme(legend.position = "none")
 
