@@ -21,7 +21,6 @@ Imports:
   ggplot2,
   mapproj
 Suggests:
-  rgdal,
   micromap,
   knitr
 Encoding: UTF-8
