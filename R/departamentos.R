@@ -40,8 +40,10 @@ globalVariables("municipios")
 #' colmap(Antioquia) # Generating the color map
 #'
 map_departamentos <- function(deptos){
-  if(any(!deptos %in% unique(municipios@data$depto)))
-    stop(deptos, " no esta en la lista de los departamentos.")
+  index <- !deptos %in% unique(municipios@data$depto)
+  if(any(index))
+    stop(paste(deptos[index], collapse = "y"),
+         " no esta en la lista de los departamentos.")
 
   municipios[municipios@data$depto %in% deptos, ]
 }
