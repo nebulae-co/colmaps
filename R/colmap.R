@@ -49,6 +49,21 @@ color_scale.integer <- function(data){
   if (n < 20) color_scale(as.ordered(data)) else color_scale(as.numeric(data))
 }
 
+# autocomplete
+
+autocomp <- function(data, map_id){
+
+  data_id <- data[[1]]
+  data.frame(
+    map_id[which(!map_id %in% data_id)],
+    NA
+  ) -> na.data.frame
+  setNames(object = na.data.frame, names(data)) -> na.data.frame
+  rbind(data, na.data.frame)
+
+}
+
+
 #' Colmap
 #'
 #' colmap - for colombian map (or in general color map) - is a wrapper of
@@ -85,7 +100,7 @@ color_scale.integer <- function(data){
 #'
 #' @export
 colmap <- function(map = departamentos, data = NULL, var = NULL, map_id = "id",
-                   data_id = map_id, legend = TRUE){
+                   data_id = map_id, legend = TRUE, autocomplete = FALSE){
 
   map_df <- suppressMessages(fortify(map))
   data <- as.data.frame(data)
@@ -105,6 +120,11 @@ colmap <- function(map = departamentos, data = NULL, var = NULL, map_id = "id",
 
   if (!data_id %in% names(data))
     stop(data_id, " not found in data.")
+
+  data <- data[c(data_id, var)]
+
+  if(autocomplete & any(!map[[map_id]] %in% data[[data_id]]))
+    data <- autocomp(data, map[[map_id]])
 
   gg <- ggplot(data, aes_string(map_id = data_id)) +
     geom_map(aes_string(fill = var), map = map_df, color = "white",
