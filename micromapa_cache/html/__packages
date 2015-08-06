@@ -1,0 +1,11 @@
+base
+colmaps
+homicidios
+saber
+dplyr
+sp
+maptools
+RColorBrewer
+rgdal
+micromap
+knitr
