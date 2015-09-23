@@ -26,9 +26,10 @@ color_scale.default <- function(data){
 color_scale.factor <- function(data){
   n <- nlevels(data)
   if (n < 10){
-    a <- scale_fill_brewer(type = "qual", palette = "Set1", na.value = "#222222")
+    scale_fill_brewer(type = "qual", palette = "Set1", na.value = "#222222")
   } else {
-    scale_fill_manual(values = rainbow(n = n, v = 0.3 * sin(seq_len(n)) + 0.7), na.value = "#222222")
+    scale_fill_manual(values = rainbow(n = n, v = 0.3 * sin(seq_len(n)) + 0.7),
+                      na.value = "#222222")
   }
 }
 
@@ -40,7 +41,8 @@ color_scale.numeric <- function(data){
 # For ordered factors (ordered categorical variables)
 color_scale.ordered <- function(data){
   n <- nlevels(data)
-  scale_fill_manual(values = colorRampPalette(c("#fee8c8", "#b30000"))(n), na.value = "#222222")
+  scale_fill_manual(values = colorRampPalette(c("#fee8c8", "#b30000"))(n),
+                    na.value = "#222222")
 }
 
 # For integer values
@@ -60,7 +62,6 @@ autocomp <- function(data, map_id){
   ) -> na.data.frame
   setNames(object = na.data.frame, names(data)) -> na.data.frame
   rbind(data, na.data.frame)
-
 }
 
 
@@ -108,7 +109,9 @@ colmap <- function(map = departamentos, data = NULL, var = NULL, map_id = "id",
   if (dim(data)[2] < 2){
     data <- if (is(map, "SpatialPolygonsDataFrame")){
               sapply(slot(map, "polygons"), slot, "ID")
-            } else {unique(map_df[, map_id])}
+            } else{
+              unique(map_df[, map_id, drop = TRUE])
+            }
     data <- data.frame(setNames(list(data), map_id), stringsAsFactors = FALSE)
     var <- map_id
     legend <- FALSE
