@@ -133,7 +133,7 @@ colmap <- function(map = departamentos, data = NULL, var = NULL, map_id = "id",
     geom_map(aes_string(fill = var), map = map_df, color = "white",
              size = 0.1) +
     expand_limits(x = map_df$long, y = map_df$lat) +
-    coord_map() +
+    coord_quickmap() +
     theme_map +
     color_scale(data[[var]])
 
