@@ -53,15 +53,15 @@ color_scale.integer <- function(data){
 
 # autocomplete
 
-autocomp <- function(data, map_id){
+autocomp <- function(data, map_id, data_id){
 
-  data_id <- data[[1]]
+  data_id <- data[[data_id]]
   data.frame(
     map_id[which(!map_id %in% data_id)],
     NA
-  ) -> na.data.frame
-  setNames(object = na.data.frame, names(data)) -> na.data.frame
-  rbind(data, na.data.frame)
+  ) -> na_data_frame
+  setNames(object = na_data_frame, names(data)) -> na_data_frame
+  rbind(data, na_data_frame)
 }
 
 
@@ -93,6 +93,11 @@ autocomp <- function(data, map_id){
 #'
 #' @param legend logical, include legend (color guide) in the plot? No legend
 #' is included if only the map is ploted.
+#'
+#' @param autocomplete logical, if there are any map regions without
+#' corresponding data values and autocomplete is true then the data will be
+#' auto-completed with missing values to plot all the regions instead of having
+#' void portions in the map.
 #'
 #' @return a ggplot object.
 #'
@@ -126,8 +131,8 @@ colmap <- function(map = departamentos, data = NULL, var = NULL, map_id = "id",
 
   data <- data[c(data_id, var)]
 
-  if(autocomplete & any(!map[[map_id]] %in% data[[data_id]]))
-    data <- autocomp(data, map[[map_id]])
+  if(autocomplete && any(!map[[map_id]] %in% data[[data_id]]))
+    data <- autocomp(data, map[[map_id]], data_id)
 
   gg <- ggplot(data, aes_string(map_id = data_id)) +
     geom_map(aes_string(fill = var), map = map_df, color = "white",
