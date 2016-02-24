@@ -11,16 +11,18 @@ Authors@R: c(
     person("Adriana", "Clavijo", email = "amclavijod@unal.edu.co", role = "ctb")
            )
 Maintainer: Daniel Moreno <damorenoco@unal.edu.co>
-Description:  Colombian maps data and other colombian data sets useful for
+Description: Colombian maps data and other colombian data sets useful for
     choropleth maps.
 License: GPL-2
 LazyData: TRUE
-Depends: R (>= 3.0.0)
+Depends:
+    R (>= 3.0.0)
 Imports:
-  sp,
-  ggplot2,
-  mapproj
+    sp,
+    ggplot2,
+    mapproj
 Suggests:
-  micromap,
-  knitr
+    micromap,
+    knitr
 Encoding: UTF-8
+RoxygenNote: 5.0.1.9000
