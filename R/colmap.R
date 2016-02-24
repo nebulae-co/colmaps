@@ -26,10 +26,10 @@ color_scale.default <- function(data){
 color_scale.factor <- function(data){
   n <- nlevels(data)
   if (n < 10){
-    scale_fill_brewer(type = "qual", palette = "Set1", na.value = "#222222")
+    scale_fill_brewer(type = "qual", palette = "Set1", na.value = "grey50")
   } else {
     scale_fill_manual(values = rainbow(n = n, v = 0.3 * sin(seq_len(n)) + 0.7),
-                      na.value = "#222222")
+                      na.value = "grey50")
   }
 }
 
@@ -42,7 +42,7 @@ color_scale.numeric <- function(data){
 color_scale.ordered <- function(data){
   n <- nlevels(data)
   scale_fill_manual(values = colorRampPalette(c("#fee8c8", "#b30000"))(n),
-                    na.value = "#222222")
+                    na.value = "grey50")
 }
 
 # For integer values
