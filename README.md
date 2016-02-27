@@ -2,13 +2,14 @@
 colmaps
 =======
 
-colmaps - colombian maps or color maps (your choice) - is an R package with current boundaries data of Colombia plus a minimal `ggplot2::geom_map()` wrapper to make [choropleth maps](https://en.wikipedia.org/wiki/Choropleth_map) with selected default color scales.
+colmaps - colombian maps or color maps (your choice) - is an R package with current boundaries data of Colombia plus a minimal [`ggplot2::geom_map()`](http://docs.ggplot2.org/current/geom_map.html) wrapper to make [choropleth maps](https://en.wikipedia.org/wiki/Choropleth_map) with selected default color scales.
 
 ### Installation
 
-You can install colmaps from GitHub with `devtools`:
+You can install colmaps from GitHub with [`devtools`](htpps://github.com/hadley/devtools):
 
 ``` r
+# install.packages("devtools")
 devtools::install_github("nebulae-co/colmaps")
 ```
 
@@ -31,7 +32,7 @@ head(municipios@data)
     #> 5 68245       68         El Guacamayo    Santander
     #> 6 25823       25              Topaipí Cundinamarca
 
-The wrapper around `ggplot2::geom_map()` is `colmap()`, it will take a `map` and some `data` and ggplot it with a selected color scale and a good theme for maps taken from `ggmap::theme_nothing()`. Since it is build with ggplot it also returns a ggplot object so one can further alter the plot in ggplot idiom, note however that you need to explicitly load ggplot to add further ggplot layers and modifications.
+The wrapper around `ggplot2::geom_map()` is `colmap()`, it will take a `map` and some `data` and ggplot it with a selected color scale and a good theme for maps taken from [`ggmap::theme_nothing()`](https://github.com/dkahle/ggmap). Since it is build with ggplot it also returns a ggplot object so one can further alter the plot in ggplot idiom, note however that you need to explicitly load ggplot to add further layers and modifications.
 
 By default the id of each area will be used as a variable:
 
@@ -44,7 +45,7 @@ colmap(municipios) +
 
 <img src="README/municipios-1.png" title="" alt="" style="display: block; margin: auto;" />
 
-But if you have data of each geographical unit you can pass it, specifying how to relate the map and the data frame. For example, from the [`homicidios`](https://github.com/nebulae-co/homicidios) package we have historical population, homicides and homicides rates data for municipalities:
+But if you have data of each geographical unit you can pass it, specifying how to relate the map and the data frame. For example, from the [`homicidios`](https://github.com/nebulae-co/homicidios) package we have historical population, homicides and homicide rates data for municipalities:
 
 ``` r
 # devtools::install_github("nebulae-co/homicidios")
@@ -69,7 +70,7 @@ colmap(municipios, subset(homicidios, año == 2000), var = "tasa")
 
 <img src="README/homicides-map-a-1.png" title="" alt="" style="display: block; margin: auto;" />
 
-Tragically (and also ironically I guess) on the year 2000, the municipality of Matanza, Santander had a homicide rate of over 1200 murders per 100.000 inhabitants, which distorts the default color scale dramatically, but we can manually re-scale the variable to be mapped into the color aesthetic, for example we can plot `log(tasa + 1)` instead of `tasa` and also we can override the default color scale in ggplot idiom. We will use `dplyr` and the pipe operator (`%>%`) from here on to handle the data with ease:
+Tragically (and also ironically?!) on the year 2000, the municipality of Matanza, Santander had a homicide rate of over 1200 murders per 100.000 inhabitants, which distorts the default color scale dramatically, but we can manually re-scale the variable to be mapped into the color aesthetic, for example we can plot `log(tasa + 1)` instead of `tasa` and also we can override the default color scale in ggplot idiom. We will use [`dplyr`](https://github.com/dplyr) and [the pipe operator (`%>%`)](https://github.com/smbache/magrittr) from here on to handle the data with ease:
 
 ``` r
 library("ggplot2")
@@ -142,12 +143,22 @@ We have already seen numeric data and factors (with more than ten levels in the 
 ``` r
 homicidios %>%
   filter(año == 2000) %>%
-  mutate(Decil = cut(x = tasa,
-                     breaks = quantile(tasa, seq(0.1, 1, 0.1), na.rm = TRUE),
-                     labels = seq(2, 10, 1),
-                     include.lowest = TRUE,
-                     ordered_result = TRUE)) %>%
-  colmap(municipios, data = ., var = "Decil")
+  mutate(tasa = round(tasa, 2),
+         Tasa = cut(x = tasa,
+                     breaks = c("0%" = -Inf,
+                                quantile(tasa, seq(0.1, 1, 0.1), na.rm = TRUE)),
+                     ordered_result = TRUE,
+                     dig.lab = 6)) %>%
+  colmap(municipios, data = ., var = "Tasa")
 ```
 
 <img src="README/homicides-map-c-1.png" title="" alt="" style="display: block; margin: auto;" />
+
+About
+-----
+
+This is the result of a sub-project [we](https://github.com/nebulae-co) started with various goals:
+
+-   [learn how to make R packages](http://r-pkgs.had.co.nz/) (in particular data packages) and improving our [`git`](https://git-scm.com/) skills
+-   distribute [some](https://github.com/nebulae-co/homicidios) [data](https://github.com/nebulae-co/saber) we think should be easier to access in an simple way - of course this is mainly targeted for R users, including ourselves
+-   enable us to do some map visualizations in a simpler way. We used this data to prepare the vignette: [*Un micro-mapa de Colombia*](http://nebulae-co.github.io/colmaps/micromapa) which shows an example of a [linked micromap](https://www.jstatsoft.org/article/view/v063i02) with colombian data. That vizualisaton was presented in a random academic event
