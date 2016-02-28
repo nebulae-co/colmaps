@@ -1,7 +1,7 @@
 # So that the examples find the departamentos data
 globalVariables("departamentos")
 
-# From ggmap's theme_nothing()
+# From ggmap::theme_nothing()
 theme_map <- theme(axis.text = element_blank(),
                    axis.title = element_blank(),
                    panel.background = element_blank(),
@@ -129,10 +129,9 @@ colmap <- function(map = departamentos, data = NULL, var = NULL, map_id = "id",
   if (!data_id %in% names(data))
     stop(data_id, " not found in data.")
 
-  data <- data[c(data_id, var)]
-
-  if(autocomplete && any(!map[[map_id]] %in% data[[data_id]]))
+  if(autocomplete && any(!map[[map_id]] %in% data[[data_id]])){
     data <- autocomp(data, map[[map_id]], data_id)
+  }
 
   gg <- ggplot(data, aes_string(map_id = data_id)) +
     geom_map(aes_string(fill = var), map = map_df, color = "white",
