@@ -32,7 +32,7 @@ head(municipios@data)
     #> 5 68245       68         El Guacamayo    Santander
     #> 6 25823       25              Topaipí Cundinamarca
 
-The wrapper around `ggplot2::geom_map()` is `colmap()`, it will take a `map` and some `data` and ggplot it with a selected color scale and a good theme for maps taken from [`ggmap::theme_nothing()`](https://github.com/dkahle/ggmap). Since it is build with ggplot it also returns a ggplot object so one can further alter the plot in ggplot idiom, note however that you need to explicitly load ggplot to add further layers and modifications.
+The wrapper around `ggplot2::geom_map()` is `colmap()`, it will take a `map` and some `data` as arguments and ggplot it with a selected color scale and a good theme for maps taken from [`ggmap::theme_nothing()`](https://github.com/dkahle/ggmap). Since it is build with ggplot it also returns a ggplot object so one can further alter the plot in ggplot idiom, note however that you need to explicitly load `ggplot2` to add further layers and modifications.
 
 By default the id of each area will be used as a variable:
 
@@ -154,11 +154,28 @@ homicidios %>%
 
 <img src="README/homicides-map-c-1.png" title="" alt="" style="display: block; margin: auto;" />
 
+Using ggplot2
+-------------
+
+As shown above, with ggplot, you can add components (e.g. `ggtitle`) to the plot or alter them (e.g. `scale_fill_*`). A nice example of this is facetting. Here we use the year (`año`) variable passed in `data` to make a grid of plots, trellis style: one per level of the variable - in this case one per year, from 2008 to 2013.
+
+``` r
+gg <- homicidios %>%
+  filter(año >= 2008) %>%
+  colmap(municipios, data = ., var = "tasa")
+
+gg + facet_wrap(~ año, nrow = 2)
+```
+
+<img src="README/facetted-map-1.png" title="" alt="" style="display: block; margin: auto;" />
+
+(It is encouraging to see how this particular map has been getting somewhat paler with time.)
+
 About
 -----
 
 This is the result of a sub-project [we](https://github.com/nebulae-co) started with various goals:
 
--   [learn how to make R packages](http://r-pkgs.had.co.nz/) (in particular data packages) and improving our [`git`](https://git-scm.com/) skills
--   distribute [some](https://github.com/nebulae-co/homicidios) [data](https://github.com/nebulae-co/saber) we think should be easier to access in an simple way - of course this is mainly targeted for R users, including ourselves
--   enable us to do some map visualizations in a simpler way. We used this data to prepare the vignette: [*Un micro-mapa de Colombia*](http://nebulae-co.github.io/colmaps/micromapa) which shows an example of a [linked micromap](https://www.jstatsoft.org/article/view/v063i02) with colombian data. That vizualisaton was presented in a random academic event
+-   [learn how to make R packages](http://r-pkgs.had.co.nz/) (in particular data packages) and improving our [`git`](https://git-scm.com/) skills.
+-   distribute [some](https://github.com/nebulae-co/homicidios) [data](https://github.com/nebulae-co/saber) we think should be easier to access in a simple way - of course this is mainly targeted for R users, including ourselves.
+-   enable us to do some map visualizations in a simpler way. We used this data to prepare the vignette: [*Un micro-mapa de Colombia*](http://nebulae-co.github.io/colmaps/micromapa) which shows an example of a [linked micromap](https://www.jstatsoft.org/article/view/v063i02) with colombian data. That vizualisaton was presented in a random academic event.
