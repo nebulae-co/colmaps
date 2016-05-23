@@ -55,9 +55,9 @@ color_scale.integer <- function(data){
 
 autocomp <- function(data, map_id, data_id, var){
 
-  data_id <- data[[data_id]]
+  data_id_coumn <- data[[data_id]]
   data.frame(
-    map_id[which(!map_id %in% data_id)],
+    map_id[which(!map_id %in% data_id_coumn)],
     NA
   ) -> na_data_frame
   setNames(object = na_data_frame, c(data_id, var)) -> na_data_frame
