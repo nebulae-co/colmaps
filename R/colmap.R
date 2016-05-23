@@ -61,7 +61,7 @@ autocomp <- function(data, map_id, data_id, var){
     NA
   ) -> na_data_frame
   setNames(object = na_data_frame, c(data_id, var)) -> na_data_frame
-  rbind(data, na_data_frame)
+  rbind(data[c(data_id, var)], na_data_frame)
 }
 
 
