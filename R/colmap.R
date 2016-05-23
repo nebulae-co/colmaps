@@ -53,14 +53,14 @@ color_scale.integer <- function(data){
 
 # autocomplete
 
-autocomp <- function(data, map_id, data_id){
+autocomp <- function(data, map_id, data_id, var){
 
   data_id <- data[[data_id]]
   data.frame(
     map_id[which(!map_id %in% data_id)],
     NA
   ) -> na_data_frame
-  setNames(object = na_data_frame, names(data)) -> na_data_frame
+  setNames(object = na_data_frame, c(data_id, var)) -> na_data_frame
   rbind(data, na_data_frame)
 }
 
@@ -130,7 +130,7 @@ colmap <- function(map = departamentos, data = NULL, var = NULL, map_id = "id",
     stop(data_id, " not found in data.")
 
   if(autocomplete && any(!map[[map_id]] %in% data[[data_id]])){
-    data <- autocomp(data, map[[map_id]], data_id)
+    data <- autocomp(data, map[[map_id]], data_id, var)
   }
 
   gg <- ggplot(data, aes_string(map_id = data_id)) +
