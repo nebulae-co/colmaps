@@ -2,16 +2,15 @@
 globalVariables("departamentos")
 
 # From ggmap::theme_nothing()
-theme_map <- theme(axis.text = element_blank(),
-                   axis.title = element_blank(),
-                   panel.background = element_blank(),
-                   panel.grid.major = element_blank(),
-                   panel.grid.minor = element_blank(),
+theme_map <- theme(axis.text         = element_blank(),
+                   axis.title        = element_blank(),
+                   panel.background  = element_blank(),
+                   panel.grid.major  = element_blank(),
+                   panel.grid.minor  = element_blank(),
                    axis.ticks.length = grid::unit(0, "cm"),
-                   axis.text = element_text(margin = grid::unit(0.01, "cm")),
-                   panel.margin = grid::unit(0, "lines"),
-                   plot.margin = grid::unit(c(0, 0, -0.5, -0.5), "lines"),
-                   complete = TRUE)
+                   panel.spacing     = grid::unit(0, "lines"),
+                   plot.margin       = grid::unit(c(0, 0, 0, 0), "lines"),
+                   complete          = TRUE)
 
 # Define color scales
 color_scale <- function(data){
@@ -28,7 +27,6 @@ color_scale.factor <- function(data){
   if (n < 10){
     scale_fill_brewer(type = "qual", palette = "Set1", na.value = "grey50")
   } else {
-    scale_fill_manual(values = rainbow(n = n, v = 0.3 * sin(seq_len(n)) + 0.7),
                       na.value = "grey50")
   }
 }
@@ -41,7 +39,6 @@ color_scale.numeric <- function(data){
 # For ordered factors (ordered categorical variables)
 color_scale.ordered <- function(data){
   n <- nlevels(data)
-  scale_fill_manual(values = colorRampPalette(c("#fee8c8", "#b30000"))(n),
                     na.value = "grey50")
 }
 
@@ -60,7 +57,6 @@ autocomp <- function(data, map_id, data_id){
     map_id[which(!map_id %in% data_id)],
     NA
   ) -> na_data_frame
-  setNames(object = na_data_frame, names(data)) -> na_data_frame
   rbind(data, na_data_frame)
 }
 
@@ -112,12 +108,9 @@ colmap <- function(map = departamentos, data = NULL, var = NULL, map_id = "id",
   data <- as.data.frame(data)
 
   if (dim(data)[2] < 2){
-    data <- if (is(map, "SpatialPolygonsDataFrame")){
-              sapply(slot(map, "polygons"), slot, "ID")
             } else{
               unique(map_df[, map_id, drop = TRUE])
             }
-    data <- data.frame(setNames(list(data), map_id), stringsAsFactors = FALSE)
     var <- map_id
     legend <- FALSE
   } else if (is.null(var)){
