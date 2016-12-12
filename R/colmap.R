@@ -27,6 +27,7 @@ color_scale.factor <- function(data){
   if (n < 10){
     scale_fill_brewer(type = "qual", palette = "Set1", na.value = "grey50")
   } else {
+    scale_fill_manual(values = grDevices::rainbow(n = n, v = 0.3 * sin(seq_len(n)) + 0.7),
                       na.value = "grey50")
   }
 }
@@ -39,6 +40,7 @@ color_scale.numeric <- function(data){
 # For ordered factors (ordered categorical variables)
 color_scale.ordered <- function(data){
   n <- nlevels(data)
+  scale_fill_manual(values = grDevices::colorRampPalette(c("#fee8c8", "#b30000"))(n),
                     na.value = "grey50")
 }
 
@@ -57,6 +59,7 @@ autocomp <- function(data, map_id, data_id){
     map_id[which(!map_id %in% data_id)],
     NA
   ) -> na_data_frame
+  stats::setNames(object = na_data_frame, names(data)) -> na_data_frame
   rbind(data, na_data_frame)
 }
 
@@ -108,9 +111,13 @@ colmap <- function(map = departamentos, data = NULL, var = NULL, map_id = "id",
   data <- as.data.frame(data)
 
   if (dim(data)[2] < 2){
+    data <- if (methods::is(map, "SpatialPolygonsDataFrame")){
+              sapply(methods::slot(map, "polygons"), methods::slot, "ID")
             } else{
               unique(map_df[, map_id, drop = TRUE])
             }
+    data <- data.frame(stats::setNames(list(data), map_id),
+                       stringsAsFactors = FALSE)
     var <- map_id
     legend <- FALSE
   } else if (is.null(var)){
