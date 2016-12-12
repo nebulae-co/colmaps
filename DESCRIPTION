@@ -19,10 +19,10 @@ Depends:
     R (>= 3.0.0)
 Imports:
     sp,
-    ggplot2 (>= 2.0.0),
+    ggplot2 (>= 2.2.0),
     mapproj
 Suggests:
     micromap,
     knitr
 Encoding: UTF-8
-RoxygenNote: 5.0.1.9000
+RoxygenNote: 5.0.1
