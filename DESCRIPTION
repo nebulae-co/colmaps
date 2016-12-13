@@ -19,7 +19,7 @@ Depends:
     R (>= 3.0.0)
 Imports:
     sp,
-    ggplot2 (>= 2.0.0),
+    ggplot2 (>= 2.2.0),
     mapproj
 Suggests:
     micromap,
