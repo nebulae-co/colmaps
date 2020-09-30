@@ -99,6 +99,8 @@ autocomp <- function(data, map_id, data_id, var){
 #' auto-completed with missing values to plot all the regions instead of having
 #' void portions in the map.
 #'
+#' @param ... any extra arguments to be passed onto aes_string()
+#'
 #' @return a ggplot object.
 #'
 #' @examples
@@ -106,7 +108,7 @@ autocomp <- function(data, map_id, data_id, var){
 #'
 #' @export
 colmap <- function(map = departamentos, data = NULL, var = NULL, map_id = "id",
-                   data_id = map_id, legend = TRUE, autocomplete = FALSE){
+                   data_id = map_id, legend = TRUE, autocomplete = FALSE, ...){
 
   map_df <- suppressMessages(fortify(map))
   data <- as.data.frame(data)
@@ -135,7 +137,7 @@ colmap <- function(map = departamentos, data = NULL, var = NULL, map_id = "id",
   }
 
   gg <- ggplot(data, aes_string(map_id = data_id)) +
-    geom_map(aes_string(fill = var), map = map_df, color = "white",
+    geom_map(aes_string(fill = var, ...), map = map_df, color = "white",
              size = 0.1) +
     expand_limits(x = map_df$long, y = map_df$lat) +
     coord_quickmap() +
