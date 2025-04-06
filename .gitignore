@@ -3,3 +3,5 @@
 .RData
 data-raw/shapefiles
 README/cache
+data-raw/shapefiles-dane/
+data-raw/shapefiles-nebulae/
