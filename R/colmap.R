@@ -105,8 +105,16 @@ autocomp <- function(data, map_id, data_id, var){
 #' colmap() # Plot default map: Colombia departments.
 #'
 #' @export
-colmap <- function(map = departamentos, data = NULL, var = NULL, map_id = "id",
+colmap <- function(map = departamentos, data = NULL, var = NULL, map_id = NULL,
                    data_id = map_id, legend = TRUE, autocomplete = FALSE){
+
+  # c("dpto_ccdgo", "mpio_cdpmp")
+
+  if(is.null(map_id)){
+
+    stop("Please set up the map_id.")
+
+  }
 
   map_df <- suppressMessages(fortify(map))
   data <- as.data.frame(data)
@@ -134,13 +142,24 @@ colmap <- function(map = departamentos, data = NULL, var = NULL, map_id = "id",
     data <- autocomp(data, map[[map_id]], data_id, var)
   }
 
-  gg <- ggplot(data, aes_string(map_id = data_id)) +
-    geom_map(aes_string(fill = var), map = map_df, color = "white",
-             size = 0.1) +
-    expand_limits(x = map_df$long, y = map_df$lat) +
-    coord_quickmap() +
-    theme_map +
-    color_scale(data[[var]])
+  if("sf" %in% class(map)){
+
+    merge(map, data, by = c(map_id, data_id)) %>%
+      ggplot() +
+      aes(fill = !!sym(var)) +
+      geom_sf() +
+      theme_map +
+      color_scale(data[[var]]) -> gg
+
+  } else {
+    gg <- ggplot(data, aes_string(map_id = data_id)) +
+      geom_map(aes_string(fill = var), map = map_df, color = "white",
+               size = 0.1) +
+      expand_limits(x = map_df$long, y = map_df$lat) +
+      coord_quickmap() +
+      theme_map +
+      color_scale(data[[var]])
+  }
 
   if (legend) gg else gg + theme(legend.position = "none")
 }
