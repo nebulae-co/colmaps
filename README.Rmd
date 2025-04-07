@@ -165,5 +165,7 @@ gg + facet_wrap(~ año, nrow = 2)
 This is the result of a sub-project [we](https://github.com/nebulae-co) started with various goals:
 
 - [learn how to make R packages](http://r-pkgs.had.co.nz/) (in particular data packages) and improving our [`git`](https://git-scm.com/) skills.
+
 - distribute [some](https://github.com/nebulae-co/homicidios) [data](https://github.com/nebulae-co/saber) we think should be easier to access in a simple way - of course this is mainly targeted for R users, including ourselves.
+
 - enable us to do some map visualizations in a simpler way. We used this data to prepare the vignette: [_Un micro-mapa de Colombia_](http://nebulae-co.github.io/colmaps/micromapa) which shows an example of a [linked micromap](https://www.jstatsoft.org/article/view/v063i02) with colombian data. That vizualisaton was presented in a random academic event.
